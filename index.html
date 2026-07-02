@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Awesome Cybersecurity Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0e14;--card:#111827;--green:#00ff41;--dim:#1a2332;--text:#e0e0e0;--glow:0 0 20px rgba(0,255,65,0.3)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,0.03) 2px,rgba(0,255,65,0.03) 4px);animation:scrollBg 20s linear infinite}
+@keyframes scrollBg{to{background-position:0 100vh}}
+.hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:700;margin-bottom:1rem}
+.hero h1 span{color:var(--green);text-shadow:var(--glow)}
+.typing{font-family:'Fira Code',monospace;color:var(--green);font-size:1.2rem;border-right:2px solid var(--green);padding-right:5px;animation:blink .8s step-end infinite;white-space:nowrap;overflow:hidden}
+@keyframes blink{50%{border-color:transparent}}
+.search-wrap{margin:2rem auto;max-width:500px;width:90%}
+.search-wrap input{width:100%;padding:.8rem 1.2rem;border:2px solid var(--green);background:var(--dim);color:var(--green);border-radius:8px;font-size:1rem;font-family:'Fira Code',monospace;outline:none}
+.search-wrap input::placeholder{color:rgba(0,255,65,.4)}
+.search-wrap input:focus{box-shadow:var(--glow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;padding:2rem clamp(1rem,4vw,4rem);max-width:1200px;margin:0 auto}
+.card{background:var(--card);border-radius:12px;padding:1.5rem;border:1px solid rgba(0,255,65,.1);transition:all .3s;cursor:default;opacity:0;transform:translateY(40px)}
+.card.visible{opacity:1;transform:translateY(0)}
+.card:hover{border-color:var(--green);box-shadow:var(--glow);transform:translateY(-4px)}
+.card .icon{font-size:2.5rem;margin-bottom:.8rem}
+.card h3{font-size:1.1rem;margin-bottom:.4rem;color:var(--green)}
+.card .count{font-family:'Fira Code',monospace;font-size:.85rem;color:rgba(0,255,65,.6)}
+.card .desc{font-size:.85rem;color:#999;margin-top:.5rem}
+.no-results{text-align:center;padding:3rem;color:#666;font-family:'Fira Code',monospace;font-size:1.1rem;display:none}
+footer{text-align:center;padding:3rem;color:#444;font-size:.85rem;border-top:1px solid var(--dim)}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.card{opacity:1;transform:none;transition:none}.typing{animation:none;border-right:none}#hero::before{animation:none}.card:hover{transform:none}}
+</style>
+</head>
+<body>
+<div class="hero" id="hero">
+<h1>60+ security tools<br><span>you actually need</span></h1>
+<p class="typing" id="typing"></p>
+<div class="search-wrap"><input type="text" id="search" placeholder="Filter categories..."></div>
+</div>
+<div class="grid" id="grid"></div>
+<div class="no-results" id="noResults">No matching categories found.</div>
+<footer>Awesome Cybersecurity Tools &mdash; Curated collection for security professionals</footer>
+<script>
+const categories=[
+{icon:"🌐",name:"Network",count:12,desc:"Nmap, Masscan, Wireshark, tcpdump, netcat"},
+{icon:"🌍",name:"Web",count:15,desc:"Burp Suite, OWASP ZAP, Nikto, SQLMap"},
+{icon:"📡",name:"Wireless",count:8,desc:"Aircrack-ng, Kismet, Wifite"},
+{icon:"🔬",name:"Reverse Engineering",count:9,desc:"Ghidra, radare2, IDA, Binary Ninja"},
+{icon:"🔍",name:"Forensics",count:7,desc:"Autopsy, Volatility, Sleuth Kit"},
+{icon:"🔑",name:"Password",count:6,desc:"Hashcat, John the Ripper, Hydra"},
+{icon:"💥",name:"Exploitation",count:10,desc:"Metasploit, Cobalt Strike, ROPgadget"},
+{icon:"🕵️",name:"OSINT",count:8,desc:"Maltego, Shodan, Recon-ng, theHarvester"},
+{icon:"☁️",name:"Cloud",count:5,desc:"Pacu, ScoutSuite, CloudMapper"},
+{icon:"⚙️",name:"Automation",count:5,desc:"Ansible, Nuclei, Sn1per"}
+];
+const grid=document.getElementById('grid');
+const search=document.getElementById('search');
+const noResults=document.getElementById('noResults');
+function render(filter=''){
+grid.innerHTML='';let shown=0;
+categories.forEach((c,i)=>{
+const match=c.name.toLowerCase().includes(filter)||c.desc.toLowerCase().includes(filter);
+if(!match)return;shown++;
+const d=document.createElement('div');d.className='card';
+d.innerHTML=`<div class="icon">${c.icon}</div><h3>${c.name}</h3><div class="count">${c.count} tools</div><div class="desc">${c.desc}</div>`;
+grid.appendChild(d);requestAnimationFrame(()=>setTimeout(()=>d.classList.add('visible'),i*80));
+});
+noResults.style.display=shown===0?'block':'none';
+}
+search.addEventListener('input',e=>render(e.target.value.toLowerCase()));
+render();
+const typeText="60+ security tools you actually need";
+const el=document.getElementById('typing');let ti=0;
+function type(){if(ti<=typeText.length){el.textContent=typeText.slice(0,ti);ti++;setTimeout(type,60)}}
+setTimeout(type,500);
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.1});
+document.addEventListener('DOMContentLoaded',()=>document.querySelectorAll('.card').forEach(c=>obs.observe(c)));
+}
+</script>
+</body>
+</html>
