@@ -16,6 +16,121 @@ A curated list of **60+** security tools, frameworks, and resources for penetrat
 
 ---
 
+## Security Landscape
+
+### Tool Categories Overview
+
+```mermaid
+mindmap
+  root((Cybersecurity<br/>Tools))
+    Network Analysis
+      Nmap
+      Wireshark
+      Masscan
+      tcpdump
+    Web App Security
+      Burp Suite
+      OWASP ZAP
+      SQLMap
+      XSStrike
+    Exploitation
+      Metasploit
+      SearchSploit
+      Responder
+    OSINT
+      Maltego
+      Sherlock
+      SpiderFoot
+      Recon-ng
+    Reverse Engineering
+      Ghidra
+      Radare2
+      pwntools
+    Password Attacks
+      Hashcat
+      John the Ripper
+      Hydra
+    Digital Forensics
+      Autopsy
+      Volatility
+      Sleuth Kit
+    Wireless & RF
+      Aircrack-ng
+      HackRF One
+      Kismet
+    Container & Cloud
+      Trivy
+      Grype
+      Kube-Hunter
+    Security Automation
+      Nuclei
+      Subfinder
+      Amass
+      Gitleaks
+    Social Engineering
+      SET
+      Gophish
+```
+
+### Pentesting Workflow
+
+```mermaid
+flowchart LR
+    subgraph RECON["1. Reconnaissance"]
+        R1[Passive OSINT] --> R2[Active Scanning]
+        R2 --> R3[Service Enumeration]
+    end
+
+    subgraph SCAN["2. Scanning"]
+        S1[Vulnerability Scan] --> S2[Port Scanning]
+        S2 --> S3[Web Crawling]
+    end
+
+    subgraph EXPLOIT["3. Exploitation"]
+        E1[Choose Exploit] --> E2[Gain Access]
+        E2 --> E3[Verify Foothold]
+    end
+
+    subgraph POST["4. Post-Exploitation"]
+        P1[Privilege Escalation] --> P2[Lateral Movement]
+        P2 --> P3[Data Exfiltration]
+    end
+
+    RECON --> SCAN --> EXPLOIT --> POST
+
+    style RECON fill:#264653,color:#fff
+    style SCAN fill:#2a9d8f,color:#fff
+    style EXPLOIT fill:#e76f51,color:#fff
+    style POST fill:#d62828,color:#fff
+```
+
+### Tool Selection by Target Type
+
+```mermaid
+flowchart TD
+    START([Target Type?]) --> Q1{What are you<br/>testing?}
+
+    Q1 -->|Web Application| WEB[Burp Suite + SQLMap<br/>+ OWASP ZAP]
+    Q1 -->|Network / Infrastructure| NET[Nmap + Masscan<br/>+ Metasploit]
+    Q1 -->|Wireless| WIFI[Aircrack-ng<br/>+ Kismet]
+    Q1 -->|Binary / Firmware| RE[Ghidra + Radare2<br/>+ Binwalk]
+    Q1 -->|Passwords| PASS[Hashcat + John<br/>+ Hydra]
+    Q1 -->|Cloud / Containers| CLOUD[Trivy + Grype<br/>+ Kube-Hunter]
+    Q1 -->|Social Engineering| SOC[SET + Gophish]
+    Q1 -->|Source Code| CODE[Gitleaks + Semgrep]
+
+    style WEB fill:#e76f51,color:#fff
+    style NET fill:#264653,color:#fff
+    style WIFI fill:#2a9d8f,color:#fff
+    style RE fill:#7b2cbf,color:#fff
+    style PASS fill:#d62828,color:#fff
+    style CLOUD fill:#0078d4,color:#fff
+    style SOC fill:#f4a261,color:#000
+    style CODE fill:#6c757d,color:#fff
+```
+
+---
+
 ## Contents
 
 - [Network Analysis](#network-analysis)
